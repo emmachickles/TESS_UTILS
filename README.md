@@ -20,3 +20,8 @@ For editable install:
 ```
 pip install -e .
 ```
+## Downloading TESS Data Products
+
+### TESS Image CAlibrator Full Frame Images ("TICA")
+
+Accessible via [MAST](https://archive.stsci.edu/hlsp/tica).
