@@ -1,4 +1,5 @@
 import numpy as np
+import os
 import matplotlib.pyplot as plt
 
 res_match = np.loadtxt('/pool001/echickle/match.txt')
@@ -53,37 +54,39 @@ def binning(t,y,dy,P,t0=0,N=500,cycles=3):
 
 for i in range(len(res_match)):
 
-    ticid = np.int64(res_match[i][0])
-    gaiaid = np.int64(res_match[i][1])
-    period = res_match[i][2]
-    period_a = res_match[i][3]
-    sector = np.int64(res_match[i][4])
-    cam = np.int64(res_match[i][5])
-    ccd = np.int64(res_match[i][6]) 
+    if os.path.exists(atlas_dir+str(gaiaid)):
 
-    t, y, dy=np.loadtxt(atlas_dir+str(gaiaid),usecols=(0,3,4),skiprows=0).T
-    binned_atlas = binning(t, y, dy=1, P=period_a, t0=0, N=500, cycles=3)
+        ticid = np.int64(res_match[i][0])
+        gaiaid = np.int64(res_match[i][1])
+        period = res_match[i][2]
+        period_a = res_match[i][3]
+        sector = np.int64(res_match[i][4])
+        cam = np.int64(res_match[i][5])
+        ccd = np.int64(res_match[i][6]) 
 
-    t = np.load(tess_dir+'s00'+str(sector)+'-lc/ts-'+str(cam)+'-'+str(ccd)+'.npy')
-    ccd_tic = np.load(tess_dir+'s00'+str(sector)+'-lc/id-'+str(cam)+'-'+str(ccd)+'.npy')
-    ind = np.nonzero(ccd_tic == ticid)[0][0]
-    y = np.load(tess_dir+'s00'+str(sector)+'-lc/lc-'+str(cam)+'-'+str(ccd)+'.npy')
-    y = y[ind]
+        t, y, dy=np.loadtxt(atlas_dir+str(gaiaid),usecols=(0,3,4),skiprows=0).T
+        binned_atlas = binning(t, y, dy=1, P=period_a, t0=0, N=500, cycles=3)
 
-    dy = np.ones(y)*np.std(y)
+        t = np.load(tess_dir+'s00'+str(sector)+'-lc/ts-'+str(cam)+'-'+str(ccd)+'.npy')
+        ccd_tic = np.load(tess_dir+'s00'+str(sector)+'-lc/id-'+str(cam)+'-'+str(ccd)+'.npy')
+        ind = np.nonzero(ccd_tic == ticid)[0][0]
+        y = np.load(tess_dir+'s00'+str(sector)+'-lc/lc-'+str(cam)+'-'+str(ccd)+'.npy')
+        y = y[ind]
 
-    binned_tess = binning(t, y, dy=dy, P=period, t0=0, N=500, cycles=3)
+        dy = np.ones(y)*np.std(y)
 
-    fig, ax = plt.subplots(2, 1, figsize=(10, 8), sharex=True)
-    ax[0].errorbar(binned_atlas[:,0], binned_atlas[:,1], yerr=binned_atlas[:,2], fmt='o', color='blue', label='ATLAS')
-    ax[0].set_ylabel('Relative Flux')
-    ax[0].set_title('ATLAS and TESS Phase Folded Light Curves')
-    ax[0].legend()
-    ax[1].errorbar(binned_tess[:,0], binned_tess[:,1], yerr=binned_tess[:,2], fmt='o', color='red', label='TESS')
-    ax[1].set_xlabel('Phase')
-    ax[1].set_ylabel('Relative Flux')
-    ax[1].legend()
-    plt.suptitle('GAIA ID: {} TIC ID: {} Period: {:.2f} Sector: {} Cam: {} Ccd: {}'.format(gaiaid, ticid, period, sector, cam, ccd))
-    plt.savefig(out_dir+'phase_folded_light_curve_{}_{}_{}.png'.format(gaiaid, ticid, period))
+        binned_tess = binning(t, y, dy=dy, P=period, t0=0, N=500, cycles=3)
+
+        fig, ax = plt.subplots(2, 1, figsize=(10, 8), sharex=True)
+        ax[0].errorbar(binned_atlas[:,0], binned_atlas[:,1], yerr=binned_atlas[:,2], fmt='o', color='blue', label='ATLAS')
+        ax[0].set_ylabel('Relative Flux')
+        ax[0].set_title('ATLAS and TESS Phase Folded Light Curves')
+        ax[0].legend()
+        ax[1].errorbar(binned_tess[:,0], binned_tess[:,1], yerr=binned_tess[:,2], fmt='o', color='red', label='TESS')
+        ax[1].set_xlabel('Phase')
+        ax[1].set_ylabel('Relative Flux')
+        ax[1].legend()
+        plt.suptitle('GAIA ID: {} TIC ID: {} Period: {:.2f} Sector: {} Cam: {} Ccd: {}'.format(gaiaid, ticid, period, sector, cam, ccd))
+        plt.savefig(out_dir+'phase_folded_light_curve_{}_{}_{}.png'.format(gaiaid, ticid, period))
 
 
