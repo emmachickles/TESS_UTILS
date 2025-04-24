@@ -67,7 +67,7 @@ for i in range(len(res_match)):
 
 
         t, y, dy=np.loadtxt(atlas_dir+str(gaiaid),usecols=(0,3,4),skiprows=0).T
-        binned_atlas = binning(t, y, dy=1, P=period_a, t0=0, N=500, cycles=3)
+        binned_atlas = binning(t, y, dy=dy, P=period_a, t0=0, N=500, cycles=3)
 
         t = np.load(tess_dir+'s00'+str(sector)+'-lc/ts-'+str(cam)+'-'+str(ccd)+'.npy')
         ccd_tic = np.load(tess_dir+'s00'+str(sector)+'-lc/id-'+str(cam)+'-'+str(ccd)+'.npy')
