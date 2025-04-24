@@ -54,15 +54,17 @@ def binning(t,y,dy,P,t0=0,N=500,cycles=3):
 
 for i in range(len(res_match)):
 
+    ticid = np.int64(res_match[i][0])
+    gaiaid = np.int64(res_match[i][1])
+    period = res_match[i][2]
+    period_a = res_match[i][3]
+    sector = np.int64(res_match[i][4])
+    cam = np.int64(res_match[i][5])
+    ccd = np.int64(res_match[i][6])     
+
     if os.path.exists(atlas_dir+str(gaiaid)):
 
-        ticid = np.int64(res_match[i][0])
-        gaiaid = np.int64(res_match[i][1])
-        period = res_match[i][2]
-        period_a = res_match[i][3]
-        sector = np.int64(res_match[i][4])
-        cam = np.int64(res_match[i][5])
-        ccd = np.int64(res_match[i][6]) 
+
 
         t, y, dy=np.loadtxt(atlas_dir+str(gaiaid),usecols=(0,3,4),skiprows=0).T
         binned_atlas = binning(t, y, dy=1, P=period_a, t0=0, N=500, cycles=3)
