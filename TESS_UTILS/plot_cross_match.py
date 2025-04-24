@@ -53,8 +53,8 @@ def binning(t,y,dy,P,t0=0,N=500,cycles=3):
 
 for i in range(len(res_match)):
 
-    gaiaid = np.int64(res_match[i][0])
-    ticid = np.int64(res_match[i][1]) 
+    ticid = np.int64(res_match[i][0])
+    gaiaid = np.int64(res_match[i][1])
     period = res_match[i][2]
     period_a = res_match[i][3]
     sector = np.int64(res_match[i][4])
