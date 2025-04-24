@@ -4,7 +4,7 @@ import numpy as np
 from LIGHTCURVE_UTILS.fold_utils import binning
 
 
-plt.ion()
+# plt.ion()
 plt.rcParams['font.family'] = 'serif'
 
 out_dir = '/home/echickle/out/250324/'
@@ -120,13 +120,13 @@ fig.savefig(out_dir+'period_hist.pdf')
 row_numbers = np.nonzero( (inds * (df_cut['PERIOD']>6/1440) * (df_cut['PERIOD']<14/1440)).to_numpy() )[0]
 
 
-# # ticid_list = [378898110, 1209122922]
+ticid_list = [378898110]
 # ticid_list = [2054836149]
-# row_numbers = [np.where(df_cut['TICID'] == ticid)[0][0] for ticid in ticid_list]
-for i in range(0): # range(len(row_numbers)):
+row_numbers = [np.where(df_cut['TICID'] == ticid)[0][0] for ticid in ticid_list]
+for i in range(len(row_numbers)):
 
-    row = np.random.choice(row_numbers)
-    # row = row_numbers[i]
+    # row = np.random.choice(row_numbers)
+    row = row_numbers[i]
 
     sector = int(df_cut['SECTOR'][row])
     cam = int(df_cut['CAM'][row])
@@ -143,6 +143,9 @@ for i in range(0): # range(len(row_numbers)):
     print(peak_sig)
     print(peak_wid)
     print(dphi)
+    print(sector)
+    print(cam)
+    print(ccd)
     print()
 
     lc_dir = '/data/echickle/TESS_FFI/s00{}/s00{}-lc/'.format(sector, sector)
@@ -163,4 +166,5 @@ for i in range(0): # range(len(row_numbers)):
     ax.set_title(str( np.round( period*1440, 2 ))+' min')
     ax.errorbar(binned_lc[:,0], binned_lc[:,1], binned_lc[:,2], ls='')
     fig.savefig(out_dir+str(period)+'_'+str(peak_sig)+'_'+str(ticid)+'.png')
+    plt.show()
     # plt.close()

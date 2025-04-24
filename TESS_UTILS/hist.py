@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from LIGHTCURVE_UTILS.fold_utils import binning
 from astropy.io import fits
 
-plt.ion()
+# plt.ion()
 plt.rcParams['font.family'] = 'serif'
 
 mydir = '/data/echickle/BLS_Results/TESS_Cycle_5/'
@@ -61,7 +61,7 @@ plt.figure(figsize=(8,2))
 plt.errorbar( binned_lc[:,0], binned_lc[:,1], binned_lc[:,2], ls='',
               c='k')
 plt.xlabel('Time [TJD]')
-
+plt.show()
 
 # data = np.empty((0, 14))
 # for f in fnames[:4]:
