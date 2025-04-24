@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-res_match = np.loadtxt('match.txt')
+res_match = np.loadtxt('/pool001/echickle/match.txt')
 atlas_dir = '/pool001/echickle/ATLAS/'
 tess_dir = '/nobackup1c/users/echickle/'
 out_dir = '/pool001/echickle/plots/'
